@@ -33,4 +33,24 @@ class Player
     end
     choice == "1"
   end
+
+  def give_feedback
+    puts "How many colors are in the correct position?"
+    correct_colors = gets.chomp
+    until correct_colors.to_i.between?(0,@code_length)
+      puts "Please give the number of colors in the correct position."
+      correct_colors = gets.chomp
+    end
+    puts "How many colors are in your code but in the wrong position?"
+    misplaced_colors = gets.chomp
+    until misplaced_colors.to_i.between?(0,@code_length - correct_colors.to_i)
+      puts "Please give the number of colors that in your code, but in the wrong position."
+      misplaced_colors = gets.chomp
+    end
+    feedback = []
+    correct_colors.to_i.times { feedback.push("C") }
+    misplaced_colors.to_i.times { feedback.push("/") }
+    feedback.push("X") until feedback.length == @code_length
+    feedback
+  end
 end

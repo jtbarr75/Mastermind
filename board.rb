@@ -1,11 +1,12 @@
 class Board
   def initialize(code_length)
     @guesses = [[]]
-    @feedback = [[]]
+    @blank_feedback = []
     code_length.times do
       @guesses[0].push("____")
-      @feedback[0].push("_")
+      @blank_feedback.push("_")
     end
+    @feedback = [@blank_feedback]
     @board_width = code_length * 7
   end
 
@@ -16,9 +17,17 @@ class Board
     
   end
 
-  def add(guess, feedback)
+  def add(guess, feedback = @blank_feedback)
     @guesses.push(guess)
     @feedback.push(feedback)
+  end
+
+  def add_feedback(feedback)
+    @feedback[-1] = feedback
+  end
+
+  def last_feedback
+    @feedback[-1]
   end
 
   def win?

@@ -15,14 +15,18 @@ class Game
   end
 
   def run_game
-    is_codemaker = @player.codemaker?
+    @is_codemaker = @player.codemaker?
     
     if @is_codemaker
-      puts "Think of a #{code_length} color combination of #{@colors.join(", ")}"
+      puts "Think of a #{@code_length} color combination of #{@colors.join(", ")}"
       puts "Press enter when ready."
       input = gets.chomp
       until @game_over
-        @computer.guess
+        @board.add(@computer.guess)
+        @board.show
+        feedback = @player.give_feedback
+        @board.add_feedback(feedback)
+        @computer.calculate(feedback)
       end
     else
       @computer.select_random_code(@code_length)
