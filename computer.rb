@@ -16,6 +16,10 @@ class Computer
     code_length.times { code.push(@colors[rand(@colors.length)]) }
   end
 
+  #Returns feeback array i.e. C C / X comparing guess to code.
+  #C for each correct value in correct position
+  #/ for each correct value in wrong position
+  #X for values not in the code. Values are only counted once.
   def get_feedback(guess, code = @code)
     feedback = []
     guess = guess.clone
@@ -37,6 +41,7 @@ class Computer
     feedback
   end
 
+  #Picks the first guess from the set of all possible guesses
   def guess
     @possible_codes = @colors.repeated_permutation(@code_length).to_a unless @possible_codes
     @last_guess = @possible_codes[0]
@@ -44,6 +49,7 @@ class Computer
     @last_guess
   end
 
+  #Looks at feedback from last guess and removes all possible codes that wouldn't produce that same feedback
   def calculate(feedback)
     @possible_codes.select! do |possible_code|
       possible_feedback = get_feedback(@last_guess, possible_code)

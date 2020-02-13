@@ -8,6 +8,7 @@ class Player
     @code_length = code_length
   end
 
+  #Prompts player for a code with correct colors and length
   def guess
     puts "Guess the code: (color, color, color, color)\n"
     guess = gets.chomp
@@ -27,6 +28,7 @@ class Player
     guesses
   end
 
+  #Asks player if they want to make the code or guess computer's code
   def codemaker?
     choice = get_specific_input(
       "Do you want to be 1. Codemaker or 2. Codebreaker?",
@@ -36,6 +38,7 @@ class Player
     choice == 1
   end
 
+  #Prompts player for feedback on how correct the computer's guess was
   def give_feedback
     correct_colors = get_specific_input(
       "How many colors are in the correct position?",
@@ -54,6 +57,7 @@ class Player
     feedback
   end
 
+  #Prompts player for number of colors, length of code
   def choose_difficulty
     game_settings = {}
     game_settings[:num_colors] = get_specific_input(
@@ -67,7 +71,8 @@ class Player
     game_settings
   end
 
-  def get_specific_input(prompt, repeat_prompt) #need to be able to specify return value
+  #Prompts player for input that satisfies a condition in given block, repeats until satisfied
+  def get_specific_input(prompt, repeat_prompt)
     puts prompt
     value = gets.chomp
     until yield(value)

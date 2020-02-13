@@ -18,7 +18,6 @@ class Board
     @guesses.each_with_index do
        |line, index| print "#{line.join(", ").ljust(@board_width) } | #{@feedback[index].join(" ")}\n\n" 
     end
-    
   end
 
   def add(guess, feedback = @blank_feedback)
