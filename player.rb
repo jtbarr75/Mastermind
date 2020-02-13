@@ -1,6 +1,9 @@
 class Player
 
-  def initialize(colors, code_length)
+  def initialize
+  end
+
+  def set_values(colors, code_length)
     @colors = colors
     @code_length = code_length
   end
@@ -25,32 +28,52 @@ class Player
   end
 
   def codemaker?
-    puts "Do you want to be 1. Codemaker or 2. Codebreaker?"
-    choice = gets.chomp
-    until choice == "1" || choice == "2"
-      puts "Please choose 1 or 2"
-      choice = gets.chomp
-    end
-    choice == "1"
+    choice = get_specific_input(
+      "Do you want to be 1. Codemaker or 2. Codebreaker?",
+      "Please choose 1 or 2"
+    ) { |value| value == "1" || value == "2" }
+    
+    choice == 1
   end
 
   def give_feedback
-    puts "How many colors are in the correct position?"
-    correct_colors = gets.chomp
-    until correct_colors.to_i.between?(0,@code_length)
-      puts "Please give the number of colors in the correct position."
-      correct_colors = gets.chomp
-    end
-    puts "How many colors are in your code but in the wrong position?"
-    misplaced_colors = gets.chomp
-    until misplaced_colors.to_i.between?(0,@code_length - correct_colors.to_i)
-      puts "Please give the number of colors that in your code, but in the wrong position."
-      misplaced_colors = gets.chomp
-    end
+    correct_colors = get_specific_input(
+      "How many colors are in the correct position?",
+      "Please give the number of colors in the correct position."
+    ) { |value| value.to_i.between?(0,@code_length) }
+    
+    misplaced_colors = get_specific_input(
+      "How many colors are in your code but in the wrong position?",
+      "Please give the number of colors that in your code, but in the wrong position."
+    ) { |value| value.to_i.between?(0,@code_length - correct_colors.to_i) }
+    
     feedback = []
     correct_colors.to_i.times { feedback.push("C") }
     misplaced_colors.to_i.times { feedback.push("/") }
     feedback.push("X") until feedback.length == @code_length
     feedback
+  end
+
+  def choose_difficulty
+    game_settings = {}
+    game_settings[:num_colors] = get_specific_input(
+      "Choose how many color choices you'd like: (2-6). More colors is more difficult.",
+      "Please choose a number between 2 and 6."
+    ) { |value| value.to_i.between?(2, 6) }
+    game_settings[:code_length] = get_specific_input(
+      "Choose how long you'd like the code to be: (2-6). Longer codes are more difficult.",
+      "Please choose a number between 2 and 6."
+    ) { |value| value.to_i.between?(2,6) }
+    game_settings
+  end
+
+  def get_specific_input(prompt, repeat_prompt) #need to be able to specify return value
+    puts prompt
+    value = gets.chomp
+    until yield(value)
+      puts repeat_prompt
+      value = gets.chomp
+    end
+    value =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/ ? value.to_i : value
   end
 end

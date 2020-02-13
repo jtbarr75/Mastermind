@@ -1,18 +1,22 @@
 class Board
-  def initialize(code_length)
+  def initialize
     @guesses = [[]]
     @blank_feedback = []
+    @feedback = []
+  end
+
+  def set_values(code_length)
     code_length.times do
       @guesses[0].push("____")
       @blank_feedback.push("_")
     end
-    @feedback = [@blank_feedback]
+    @feedback.push(@blank_feedback)
     @board_width = code_length * 7
   end
 
   def show
     @guesses.each_with_index do
-       |line, index| print "#{line.join(", ").ljust(@board_width)} | #{@feedback[index].join(" ")}\n\n" 
+       |line, index| print "#{line.join(", ").ljust(@board_width) } | #{@feedback[index].join(" ")}\n\n" 
     end
     
   end
