@@ -1,8 +1,5 @@
 class Player
 
-  def initialize
-  end
-
   def set_values(colors, code_length)
     @colors = colors
     @code_length = code_length

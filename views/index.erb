@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <style>
+      
+    </style>
+  </head>
+  <body>
+    <% if started_game %>
+      <% if is_codemaker %>
+        <p>Think of a <%= code_length %> color combination of <%= colors.join(', ') %>
+      <% else %>
+        <form>
+          <% code_length.times do |index| %>
+            <select id="value<%=index%>" name="colors<%=index%>">
+              <% colors.each do |color| %>
+                <option value="<%= color %>"><%= color %></option>
+              <% end %>
+            </select>
+          <% end %>
+          <input type='submit' value = 'Guess!' />
+        </form>
+      <% end %>
+    <% else %>
+      <form method="post">
+        <label for="is_codemaker">Do you want to be the Code Maker or Breaker? </label>
+        <select id="is_codemaker" name="is_codemaker">
+          <option value="True">Maker</option>
+          <option value="False">Breaker</option>
+        </select><br>
+        <label>Difficulty Settings</label><br>
+        <label for="num_colors">Select the number of colors to choose from:</label>
+        <select id="num_colors" name="num_colors">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select><br>
+        <label for="num_colors">Select the length of the code:</label>
+        <select id="code_length" name="code_length">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select><br>
+        <input type='submit' value = 'Start' />
+      </form>
+    <% end %>
+  </body>
+</html>

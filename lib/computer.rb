@@ -1,9 +1,6 @@
 class Computer
   attr_reader :code
 
-  def initialize
-  end
-
   def set_values(colors, code_length)
     @colors = colors
     @code = select_random_code(code_length)
