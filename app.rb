@@ -13,10 +13,15 @@ end
 
 post '/' do
   if session[:game].started 
-    
+
   else
     session[:game].started = true
     session[:game].create_game(params[:num_colors].to_i, params[:code_length].to_i, params[:is_codemaker])
   end
     redirect '/'
+end
+
+post '/reset' do
+  session[:game] = Game.new
+  redirect '/'
 end
