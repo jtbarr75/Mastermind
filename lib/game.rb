@@ -3,8 +3,8 @@ class Game
   require_relative 'computer'
   require_relative 'player'
 
-  attr_reader :code_length, :colors, :is_codemaker
-  attr_accessor :started
+  attr_reader :code_length, :colors, :is_codemaker, :board, :computer
+  attr_accessor :started, :turn
 
   DEFAULT_COLORS = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"]
 
@@ -14,6 +14,7 @@ class Game
     @board = Board.new
     @computer = Computer.new
     @player = Player.new
+    @turn = 0
   end
 
   def create_game(num_colors = 4, code_length = 4, is_codemaker = false)
@@ -21,8 +22,8 @@ class Game
     @code_length = code_length
     @is_codemaker = (is_codemaker == 'True')
     @board.set_values(code_length)
-    @computer.set_values(colors, code_length)
-    @player.set_values(colors, code_length)
+    @computer.set_values(@colors, code_length)
+    @player.set_values(@colors, code_length)
   end
 
   def variables 
@@ -32,7 +33,9 @@ class Game
       colors_list: to_sentence(@colors),
       is_codemaker: @is_codemaker,
       computer: @computer,
-      started_game: @started
+      board: @board,
+      started_game: @started,
+      turn: @turn
     }
   end
 

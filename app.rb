@@ -28,6 +28,15 @@ get '/breaker' do
   erb :breaker_show, :locals => session[:game].variables
 end
 
+post '/breaker' do
+  game = session[:game]
+  guess = params.values
+  feedback = game.computer.get_feedback(guess)
+  game.board.add(guess, game.turn, feedback)
+  game.turn = game.turn + 1
+  redirect '/breaker'
+end
+
 post '/reset' do
   session[:game] = Game.new
   redirect '/'

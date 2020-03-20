@@ -1,13 +1,16 @@
 <html>
   <head>
     <style>
-      
+      .container {display: flex; margin: 2px}
+      .col {flex-direction: column; margin-left: 10px; margin-right: 10px}
+      .row {flex-direction: row; margin: 2px}
+      .image {margin: 2px}
     </style>
   </head>
   <body>
     <%= yield %>
     <form method="post" action="/reset">
-      <input type="submit" value="reset">
+      <input type="submit" value="Reset">
     </form>
   </body>
 </html>

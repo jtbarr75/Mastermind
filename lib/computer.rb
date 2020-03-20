@@ -1,5 +1,5 @@
 class Computer
-  attr_reader :code
+  attr_reader :code, :colors
 
   def set_values(colors, code_length)
     @colors = colors
@@ -9,8 +9,9 @@ class Computer
   end
 
   def select_random_code(code_length)
-    @code = []
+    code = []
     code_length.times { code.push(@colors[rand(@colors.length)]) }
+    code
   end
 
   #Returns feeback array i.e. C C / X comparing guess to code.
