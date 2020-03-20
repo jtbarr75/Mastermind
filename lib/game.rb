@@ -29,6 +29,7 @@ class Game
     {
       code_length: @code_length, 
       colors: @colors,
+      colors_list: to_sentence(@colors),
       is_codemaker: @is_codemaker,
       computer: @computer,
       started_game: @started
@@ -81,6 +82,24 @@ class Game
         puts "You win!"
         @game_over = true
       end
+    end
+  end
+
+  def to_sentence(arr)
+    arr = arr.to_a
+    words_connector     = ", "
+    two_words_connector = " and "
+    last_word_connector = ", and "
+
+    case arr.length
+      when 0
+        ""
+      when 1
+        arr[0].to_s.dup
+      when 2
+        "#{arr[0]}#{two_words_connector}#{arr[1]}"
+      else
+        "#{arr[0...-1].join(words_connector)}#{last_word_connector}#{arr[-1]}"
     end
   end
 end

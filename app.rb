@@ -12,13 +12,20 @@ get '/' do
 end
 
 post '/' do
-  if session[:game].started 
-
+  session[:game].create_game(params[:num_colors].to_i, params[:code_length].to_i, params[:is_codemaker])
+  if params[:is_codemaker] == 'True'
+    redirect '/maker'
   else
-    session[:game].started = true
-    session[:game].create_game(params[:num_colors].to_i, params[:code_length].to_i, params[:is_codemaker])
+    redirect'/breaker'
   end
-    redirect '/'
+end
+
+get '/maker' do
+  erb :maker_show, :locals => session[:game].variables
+end
+
+get '/breaker' do
+  erb :breaker_show, :locals => session[:game].variables
 end
 
 post '/reset' do

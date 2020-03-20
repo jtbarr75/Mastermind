@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <style>
+      
+    </style>
+  </head>
+  <body>
+     <p>
+          The devious computer mastermind is thinking of a <%= code_length %> color combination of <%= colors_list %>.
+          Guess a combination! 
+        <p>
+        <form>
+          <% code_length.times do |index| %>
+            <select id="value<%=index%>" name="colors<%=index%>">
+              <% colors.each do |color| %>
+                <option value="<%= color %>"><%= color %></option>
+              <% end %>
+            </select>
+          <% end %>
+          <input type='submit' value = 'Guess!' />
+        </form>
+  </body>
+</html>
