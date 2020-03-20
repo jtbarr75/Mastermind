@@ -3,7 +3,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 
 configure do
-  enable :sessions
+  enable :sessions, :layout
 end
 
 get '/' do
