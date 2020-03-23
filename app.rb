@@ -1,4 +1,4 @@
-require_relative 'lib/game'
+require_relative 'lib/mastermind'
 require 'sinatra'
 require 'sinatra/reloader'
 
@@ -7,21 +7,41 @@ configure do
 end
 
 get '/' do
-  session[:game] = Game.new unless session[:game]
+  session[:game] = Mastermind.new unless session[:game]
   erb :index, :locals => session[:game].variables
 end
 
 post '/' do
   session[:game].create_game(params[:num_colors].to_i, params[:code_length].to_i, params[:is_codemaker])
   if params[:is_codemaker] == 'True'
-    redirect '/maker'
+    redirect '/ready'
   else
     redirect'/breaker'
   end
 end
 
+get '/ready' do
+  erb :ready_show, :locals => session[:game].variables
+end
+
+post '/ready' do
+  redirect '/maker'
+end
+
 get '/maker' do
+  game = session[:game]
+  game.new_guess = game.computer.guess
+  game.board.add(game.new_guess, game.turn)
   erb :maker_show, :locals => session[:game].variables
+end
+
+post '/maker' do
+  game = session[:game]
+  feedback = get_player_feedback
+  game.computer.calculate(feedback)
+  game.board.add_feedback(game.turn, feedback)
+  game.turn = game.turn + 1
+  redirect '/maker'
 end
 
 get '/breaker' do
@@ -40,4 +60,13 @@ end
 post '/reset' do
   session[:game] = Game.new
   redirect '/'
+end
+
+def get_player_feedback
+  game = session[:game]
+  feedback = []
+  params[:num_correct].to_i.times {feedback.push("C")}
+  params[:num_misplaced].to_i.times {feedback.push("/")}
+  feedback.push("X") until feedback.length == game.code_length
+  feedback
 end

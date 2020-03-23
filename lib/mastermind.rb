@@ -1,10 +1,10 @@
-class Game
+class Mastermind
   require_relative 'board'
   require_relative 'computer'
   require_relative 'player'
 
   attr_reader :code_length, :colors, :is_codemaker, :board, :computer
-  attr_accessor :started, :turn
+  attr_accessor :started, :turn, :new_guess
 
   DEFAULT_COLORS = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"]
 
@@ -35,7 +35,8 @@ class Game
       computer: @computer,
       board: @board,
       started_game: @started,
-      turn: @turn
+      turn: @turn,
+      new_guess: @new_guess
     }
   end
 
@@ -107,5 +108,3 @@ class Game
   end
 end
 
-# game = Game.new
-# game.run_game

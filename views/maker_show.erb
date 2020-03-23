@@ -1,1 +1,93 @@
 <p>Think of a <%= code_length %> color combination of <%= colors_list %>
+<div class = "container row">
+  <div>The computer guesses: </div>
+    <% new_guess.each do |color| %>
+      <div class = "image">
+        <img src = "<%= board.pegs[color] %>">
+      </div>
+    <% end %>
+  </div>
+</div>
+<form method="post">
+  <label for="num_correct">Correct colors:</label>
+  <select id="num_correct" name="num_correct">
+    <% (code_length+1).times do |num| %>
+      <option value="<%= num %>"><%= num %></option>
+    <% end %>
+  </select>
+  <label for="num_misplaced">Misplaced colors:</label>
+  <select id="num_misplaced" name="num_misplaced">
+    <% (code_length+1).times do |num| %>
+      <option value="<%= num %>"><%= num %></option>
+    <% end %>
+  </select>
+  <input type='submit' value = 'Confirm' />
+</form>
+
+<div class = "container">
+  <div class = "container col">
+    <% 12.times do |index| %>
+      <div class = "container row">
+        <div class = "container row">
+          <% if board.guesses[index].empty? %>
+            <% code_length.times do %>
+              <div class = "image">
+                <img src="<%= board.pegs["Empty"] %>">
+              </div>
+            <% end %>
+          <% else %>
+            <% code_length.times do |num| %>
+              <div class = "image">
+                <img src="<%= board.pegs[board.guesses[index][num]] %>">
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class = "container col">
+          <% if board.feedback[index].nil? %>
+            <div class = "container row">
+              <% (code_length/2).times do %>
+                <div class = "image">
+                  <img src="<%= board.pegs["X"] %>">
+                </div>
+              <% end %>
+            </div>
+            <div class = "container row">
+              <% (code_length/2).upto(code_length-1) do %>
+                <div class = "image">
+                  <img src="<%= board.pegs["X"] %>">
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class = "container row">
+              <% (code_length/2).times do |num| %>
+                <div class = "image">
+                  <img src="<%= board.pegs[board.feedback[index][num]] %>">
+                </div>
+              <% end %>
+            </div>
+            <div class = "container row">
+              <% (code_length/2).upto(code_length-1) do |num| %>
+                <div class = "image">
+                  <img src="<%= board.pegs[board.feedback[index][num]] %>">
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class = "col">
+    <% if board.win? %>
+      <div class = "image">
+        <img src = "https://vectr.com/jtbarr/a1c5ND6NZL.svg?width=250&height=250&select=a1c5ND6NZLpage0">
+      </div>
+    <% else %>
+      <p><img src="<%=board.pegs["C"] %>">: A color is in the right place</p>
+      <p><img src="<%=board.pegs["/"] %>">: A color is in the wrong place</p>
+      <p><img src="<%=board.pegs["X"] %>">: A color isn't in the secret code</p>
+    <% end %>
+  </div>
+</div>

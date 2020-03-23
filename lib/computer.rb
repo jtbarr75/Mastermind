@@ -6,6 +6,7 @@ class Computer
     @code = select_random_code(code_length)
     @code_length = code_length
     @color_incedence = @colors.map{|k| [k, 0]}.to_h
+    @possible_codes = @colors.repeated_permutation(@code_length).to_a
   end
 
   def select_random_code(code_length)
@@ -41,13 +42,12 @@ class Computer
 
   #Picks the first guess from the set of all possible guesses
   def guess
-    @possible_codes = @colors.repeated_permutation(@code_length).to_a unless @possible_codes
     @last_guess = @possible_codes[0]
     @possible_codes.shift
     @last_guess
   end
 
-  #Looks at feedback from last guess and removes all possible codes that wouldn't produce that same feedback
+  #Looks at feedback from last guess and returns all possible codes that would produce that same feedback
   def calculate(feedback)
     @possible_codes.select! do |possible_code|
       possible_feedback = get_feedback(@last_guess, possible_code)
