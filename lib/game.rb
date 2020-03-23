@@ -4,29 +4,31 @@ class Game
   require_relative 'player'
 
   attr_reader :code_length, :colors, :is_codemaker, :board, :computer
-  attr_accessor :started, :turn, :new_guess
+  attr_accessor :turn, :new_guess
 
   DEFAULT_COLORS = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"]
 
-  def initialize
+  def initialize(options = {num_colors: 4, code_length: 4, is_codemaker: false})
+    
+    @colors = DEFAULT_COLORS[0...options[:num_colors].to_i]
+    @code_length = options[:code_length].to_i
+    @is_codemaker = (options[:is_codemaker].to_s == 'true')
     @game_over = false
-    @started = false
-    @board = Board.new
-    @computer = Computer.new
-    @player = Player.new
-    @turn = 0
+    @board = Board.new(@code_length, options[:guesses], options[:feedback])
+    @computer = Computer.new(@colors, @code_length, options[:code])
+    @turn = options[:turn].to_i
   end
 
-  def create_game(num_colors = 4, code_length = 4, is_codemaker = false)
-    @colors = DEFAULT_COLORS[0...num_colors]
-    @code_length = code_length
-    @is_codemaker = (is_codemaker == 'True')
-    @board.set_values(code_length)
-    @computer.set_values(@colors, code_length)
-    @player.set_values(@colors, code_length)
-  end
+  # def create_game(num_colors = 4, code_length = 4, is_codemaker = false)
+  #   @colors = DEFAULT_COLORS[0...num_colors]
+  #   @code_length = code_length
+  #   @is_codemaker = (is_codemaker == 'True')
+  #   @board.set_values(code_length)
+  #   @computer.set_values(@colors, code_length)
+  #   @player.set_values(@colors, code_length)
+  # end
 
-  def variables 
+  def view_variables
     {
       code_length: @code_length, 
       colors: @colors,
@@ -34,9 +36,19 @@ class Game
       is_codemaker: @is_codemaker,
       # computer: @computer,
       board: @board,
-      started_game: @started,
       turn: @turn,
       new_guess: @new_guess
+    }
+  end
+
+  def session_variables
+    {
+      code_length: @code_length, 
+      num_colors: @colors.length,
+      is_codemaker: @is_codemaker,
+      turn: @turn,
+      guesses: @board.guesses,
+      feedback: @board.feedback
     }
   end
 

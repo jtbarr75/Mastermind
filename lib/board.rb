@@ -14,19 +14,23 @@ class Board
             "C" => 'https://vectr.com/jtbarr/a4gr7p5Wcz.jpg?width=10&height=10&select=a4gr7p5Wczpage0'
           }
 
-  def initialize
-    @guesses = Array.new(12, [])
-    @blank_feedback = []
-    @feedback = []
-  end
-
-  def set_values(code_length)
+  def initialize(code_length, guesses, feedback)
     @code_length = code_length
+    @guesses = guesses ? guesses : Array.new(12, [])
+    @feedback = feedback.to_a
+    @blank_feedback = []
     code_length.times do
       @blank_feedback.push("X")
     end
-    # @feedback.push(@blank_feedback)
   end
+
+  # def set_values(code_length)
+  #   @code_length = code_length
+  #   code_length.times do
+  #     @blank_feedback.push("X")
+  #   end
+  #   @feedback.push(@blank_feedback)
+  # end
 
   def add(guess, turn, feedback = @blank_feedback)
     @guesses[turn] = guess

@@ -1,18 +1,31 @@
 class Computer
   attr_reader :code, :colors
+  attr_accessor :possible_codes
 
-  def set_values(colors, code_length)
+  def initialize(colors, code_length, code = nil, possible_codes = nil)
     @colors = colors
-    @code = select_random_code(code_length)
     @code_length = code_length
+    @code = (code ? code : select_random_code(code_length))
     @color_incedence = @colors.map{|k| [k, 0]}.to_h
-    @possible_codes = @colors.repeated_permutation(@code_length).to_a
+    @possible_codes = (possible_codes ? possible_codes : create_possible_codes)
   end
+
+  # def set_values(colors, code_length)
+  #   @colors = colors
+  #   @code = select_random_code(code_length)
+  #   @code_length = code_length
+  #   @color_incedence = @colors.map{|k| [k, 0]}.to_h
+  #   @possible_codes = create_possible_codes
+  # end
 
   def select_random_code(code_length)
     code = []
     code_length.times { code.push(@colors[rand(@colors.length)]) }
     code
+  end
+
+  def create_possible_codes
+    @colors.repeated_permutation(@code_length).to_a
   end
 
   #Returns feeback array i.e. C C / X comparing guess to code.

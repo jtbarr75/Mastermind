@@ -1,4 +1,4 @@
-require_relative 'lib/mastermind'
+require_relative 'lib/game'
 require 'sinatra'
 require 'sinatra/reloader'
 
@@ -7,21 +7,23 @@ configure do
 end
 
 get '/' do
-  session[:game] = Mastermind.new unless session[:game]
-  erb :index, :locals => session[:game].variables
+  erb :index
 end
 
 post '/' do
-  session[:game].create_game(params[:num_colors].to_i, params[:code_length].to_i, params[:is_codemaker])
-  if params[:is_codemaker] == 'True'
+  game = Game.new(params)
+  game.session_variables.each {|key, value| session[key] = value}
+  if params[:is_codemaker] == 'true'
     redirect '/ready'
   else
+    session[:code] = game.computer.code
     redirect'/breaker'
   end
 end
 
 get '/ready' do
-  erb :ready_show, :locals => session[:game].variables
+  game = Game.new(session)
+  erb :ready_show, :locals => game.view_variables
 end
 
 post '/ready' do
@@ -29,44 +31,45 @@ post '/ready' do
 end
 
 get '/maker' do
-  game = session[:game]
+  game = Game.new(session)
   game.new_guess = game.computer.guess
   game.board.add(game.new_guess, game.turn)
-  erb :maker_show, :locals => session[:game].variables
+  erb :maker_show, :locals => game.view_variables
 end
 
 post '/maker' do
-  game = session[:game]
+  game = Game.new(session)
   feedback = get_player_feedback
   game.computer.calculate(feedback)
   game.board.add_feedback(game.turn, feedback)
   game.turn = game.turn + 1
+  game.session_variables.each {|key, value| session[key] = value}
   redirect '/maker'
 end
 
 get '/breaker' do
-  erb :breaker_show, :locals => session[:game].variables
+  game = Game.new(session)
+  erb :breaker_show, :locals => game.view_variables
 end
 
 post '/breaker' do
-  game = session[:game]
+  game = Game.new(session)
   guess = params.values
   feedback = game.computer.get_feedback(guess)
   game.board.add(guess, game.turn, feedback)
   game.turn = game.turn + 1
+  game.session_variables.each {|key, value| session[key] = value}
   redirect '/breaker'
 end
 
 post '/reset' do
-  session[:game] = Game.new
   redirect '/'
 end
 
 def get_player_feedback
-  game = session[:game]
   feedback = []
   params[:num_correct].to_i.times {feedback.push("C")}
   params[:num_misplaced].to_i.times {feedback.push("/")}
-  feedback.push("X") until feedback.length == game.code_length
+  feedback.push("X") until feedback.length == session[:code_length]
   feedback
 end
