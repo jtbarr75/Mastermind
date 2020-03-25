@@ -24,14 +24,6 @@ class Board
     end
   end
 
-  # def set_values(code_length)
-  #   @code_length = code_length
-  #   code_length.times do
-  #     @blank_feedback.push("X")
-  #   end
-  #   @feedback.push(@blank_feedback)
-  # end
-
   def add(guess, turn, feedback = @blank_feedback)
     @guesses[turn] = guess
     @feedback[turn] = feedback

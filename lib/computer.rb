@@ -1,13 +1,16 @@
+
+
 class Computer
   attr_reader :code, :colors
-  attr_accessor :possible_codes
+  attr_accessor :possible_codes, :last_guess
 
-  def initialize(colors, code_length, code = nil, possible_codes = nil)
+  def initialize(colors, code_length, code = nil, last_guess = nil)
     @colors = colors
     @code_length = code_length
     @code = (code ? code : select_random_code(code_length))
     @color_incedence = @colors.map{|k| [k, 0]}.to_h
-    @possible_codes = (possible_codes ? possible_codes : create_possible_codes)
+    @last_guess = last_guess
+    @possible_codes = []
   end
 
   # def set_values(colors, code_length)

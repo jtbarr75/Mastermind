@@ -1,13 +1,19 @@
 <p>Think of a <%= code_length %> color combination of <%= colors_list %>
-<div class = "container row">
-  <div>The computer guesses: </div>
-    <% new_guess.each do |color| %>
-      <div class = "image">
-        <img src = "<%= board.pegs[color] %>">
-      </div>
-    <% end %>
+<% if new_guess %>
+  <div class = "container row">
+    <div>The computer guesses: </div>
+      <% new_guess.each do |color| %>
+        <div class = "image">
+          <img src = "<%= board.pegs[color] %>">
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
+<% elsif board.win? == false %>
+  <div class = "container row">
+    <p>The Computer can't think of any guesses that meet the criteria you gave it. It thinks you messed up somewhere.</p>
+  </div>
+<% end %>
 <form method="post">
   <label for="num_correct">Correct colors:</label>
   <select id="num_correct" name="num_correct">
@@ -81,8 +87,8 @@
   </div>
   <div class = "col">
     <% if board.win? %>
-      <div class = "image">
-        <img src = "https://vectr.com/jtbarr/a1c5ND6NZL.svg?width=250&height=250&select=a1c5ND6NZLpage0">
+      <div class = "container">
+        <p>Computer Wins!</p>
       </div>
     <% else %>
       <p><img src="<%=board.pegs["C"] %>">: A color is in the right place</p>

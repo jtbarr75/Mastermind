@@ -15,18 +15,9 @@ class Game
     @is_codemaker = (options[:is_codemaker].to_s == 'true')
     @game_over = false
     @board = Board.new(@code_length, options[:guesses], options[:feedback])
-    @computer = Computer.new(@colors, @code_length, options[:code])
+    @computer = Computer.new(@colors, @code_length, options[:code], options[:last_guess])
     @turn = options[:turn].to_i
   end
-
-  # def create_game(num_colors = 4, code_length = 4, is_codemaker = false)
-  #   @colors = DEFAULT_COLORS[0...num_colors]
-  #   @code_length = code_length
-  #   @is_codemaker = (is_codemaker == 'True')
-  #   @board.set_values(code_length)
-  #   @computer.set_values(@colors, code_length)
-  #   @player.set_values(@colors, code_length)
-  # end
 
   def view_variables
     {
