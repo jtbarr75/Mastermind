@@ -9,26 +9,27 @@
       <% end %>
     </div>
   </div>
+  <form method="post">
+    <label for="num_correct">Correct colors:</label>
+    <select id="num_correct" name="num_correct">
+      <% (code_length+1).times do |num| %>
+        <option value="<%= num %>"><%= num %></option>
+      <% end %>
+    </select>
+    <label for="num_misplaced">Misplaced colors:</label>
+    <select id="num_misplaced" name="num_misplaced">
+      <% (code_length+1).times do |num| %>
+        <option value="<%= num %>"><%= num %></option>
+      <% end %>
+    </select>
+    <input type='submit' value = 'Confirm' onClick="this.form.submit(); this.disable=true; this.value='Thinking...'; "/>
+  </form>
 <% elsif board.win? == false %>
   <div class = "container row">
     <p>The Computer can't think of any guesses that meet the criteria you gave it. It thinks you messed up somewhere.</p>
   </div>
 <% end %>
-<form method="post">
-  <label for="num_correct">Correct colors:</label>
-  <select id="num_correct" name="num_correct">
-    <% (code_length+1).times do |num| %>
-      <option value="<%= num %>"><%= num %></option>
-    <% end %>
-  </select>
-  <label for="num_misplaced">Misplaced colors:</label>
-  <select id="num_misplaced" name="num_misplaced">
-    <% (code_length+1).times do |num| %>
-      <option value="<%= num %>"><%= num %></option>
-    <% end %>
-  </select>
-  <input type='submit' value = 'Confirm' />
-</form>
+
 
 <div class = "container">
   <div class = "container col">

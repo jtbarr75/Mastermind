@@ -10,7 +10,7 @@
   <body>
     <%= yield %>
     <form method="post" action="/reset">
-      <input type="submit" value="Reset">
+      <input type="submit" value="Reset" onClick="this.form.submit(); this.disable=true; this.value='Resetting...'; ">
     </form>
   </body>
 </html>
