@@ -2,16 +2,16 @@ class Board
   attr_reader :guesses, :feedback
 
   PEGS = {
-            "Empty" => 'https://vectr.com/jtbarr/c8C1OtgIZ.jpg?width=20&height=20&select=c8C1OtgIZpage0',
-            "Red" => 'https://vectr.com/jtbarr/epERYUu1y.jpg?width=20&height=20&select=epERYUu1ypage0',
-            "Orange" => 'https://vectr.com/jtbarr/f1hdgU4rtc.jpg?width=20&height=20&select=f1hdgU4rtcpage0',
-            "Yellow" => 'https://vectr.com/jtbarr/bX1gDdejR.jpg?width=20&height=20&select=bX1gDdejRpage0',
-            "Green" => 'https://vectr.com/jtbarr/f1i0gpytkL.jpg?width=20&height=20&select=f1i0gpytkLpage0',
-            "Blue" => 'https://vectr.com/jtbarr/b4FRO5n9rj.jpg?width=20&height=20&select=b4FRO5n9rjpage0',
-            "Purple" => 'https://vectr.com/jtbarr/a5QAPh0EA.jpg?width=20&height=20&select=a5QAPh0EApage0',
-            "X" => 'https://vectr.com/jtbarr/b3VDIg8sBW.jpg?width=10&height=10&select=b3VDIg8sBWpage0',
-            "/" => 'https://vectr.com/jtbarr/d417OpI5k.jpg?width=10&height=10&select=d417OpI5kpage0',
-            "C" => 'https://vectr.com/jtbarr/a4gr7p5Wcz.jpg?width=10&height=10&select=a4gr7p5Wczpage0'
+            "Empty" => 'images/black_dot.jpg',
+            "Red" => 'images/red_dot.jpg',
+            "Orange" => 'images/orange_dot.jpg',
+            "Yellow" => 'images/yellow_dot.jpg',
+            "Green" => 'images/green_dot.jpg',
+            "Blue" => 'images/blue_dot.jpg',
+            "Purple" => 'images/purple_dot.jpg',
+            "X" => 'images/black_dot_small.jpg',
+            "/" => 'images/grey_dot_small.jpg',
+            "C" => 'images/white_dot_small.jpg'
           }
 
   def initialize(code_length, guesses, feedback)
