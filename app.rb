@@ -110,6 +110,7 @@ class App < Sinatra::Base
 
   post '/reset' do
     Code.destroy_all
+    session.clear
     redirect '/'
   end
 

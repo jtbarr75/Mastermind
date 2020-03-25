@@ -3,17 +3,18 @@
   The devious computer mastermind is thinking of a <%= code_length %> color combination of <%= colors_list %>.
   Guess a combination! 
 <p>
-<form method="post">
-  <% code_length.times do |index| %>
-    <select id="value<%=index%>" name="colors<%=index%>">
-      <% colors.each do |color| %>
-        <option value="<%= color %>"><%= color %></option>
-      <% end %>
-    </select>
-  <% end %>
-  <input type='submit' value = 'Guess!' />
-</form>
-
+<% unless board.win? || turn >= 12 %>
+  <form method="post">
+    <% code_length.times do |index| %>
+      <select id="value<%=index%>" name="colors<%=index%>">
+        <% colors.each do |color| %>
+          <option value="<%= color %>"><%= color %></option>
+        <% end %>
+      </select>
+    <% end %>
+    <input type='submit' value = 'Guess!' />
+  </form>
+<% end %>
 <div class = "container">
   <div class = "container col">
     <% 12.times do |index| %>
@@ -73,6 +74,10 @@
     <% if board.win? %>
       <div class = "image">
         <img src = "https://vectr.com/jtbarr/a1c5ND6NZL.svg?width=250&height=250&select=a1c5ND6NZLpage0">
+      </div>
+    <% elsif turn >= 12 %>
+      <div class = "container">
+        <p>You Lose!</p>
       </div>
     <% else %>
       <p><img src="<%=board.pegs["C"] %>">: A color is in the right place</p>

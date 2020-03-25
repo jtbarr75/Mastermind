@@ -90,6 +90,10 @@
       <div class = "container">
         <p>Computer Wins!</p>
       </div>
+    <% elsif turn >= 12 %>
+      <div class = "container">
+        <p>Computer loses! Didn't think this was even possible!</p>
+      </div>
     <% else %>
       <p><img src="<%=board.pegs["C"] %>">: A color is in the right place</p>
       <p><img src="<%=board.pegs["/"] %>">: A color is in the wrong place</p>
