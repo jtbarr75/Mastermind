@@ -5,14 +5,14 @@
 .image {margin: 2px}
 /* If the screen size is 641px wide or more, set the font-size of <div> to 80px */
 @media screen and (min-width: 641px) {
-  body {
-    font-size: 16pt;
+  * {
+    font-size: 12pt;
   }
 }
 
 /* If the screen size is 640px wide or less, set the font-size of <div> to 30px */
 @media screen and (max-width: 640px) {
-  body {
+  * {
     font-size: 18pt;
   }
 }
