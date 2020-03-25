@@ -16,7 +16,7 @@ class App < Sinatra::Base
 
   post '/' do
     game = Game.new(params)
-    game.session_variables.each {|key, value| session[key] = value}
+    save(game)
     if params[:is_codemaker] == 'true'
       redirect '/ready'
     else
@@ -27,11 +27,9 @@ class App < Sinatra::Base
 
   get '/ready' do
     game = Game.new(session)
+    reset_db
     session[:next_guess] = game.computer.create_possible_codes.first
-    game.computer.create_possible_codes.each do |code|
-      code = code.each_with_index.map { |value, index| ["color#{index}", value] }.to_h
-      Code.create(code)
-    end
+    create_possible_codes_db(game)
     erb :ready_show, :locals => game.view_variables
   end
 
@@ -45,13 +43,7 @@ class App < Sinatra::Base
     game.computer.last_guess = session[:next_guess]
 
     if game.new_guess
-      c = Code.find_by(color0: game.new_guess[0], 
-                      color1: game.new_guess[1],
-                      color2: game.new_guess[2],
-                      color3: game.new_guess[3],
-                      color4: game.new_guess[4],
-                      color5: game.new_guess[5])
-      c.destroy
+      remove_code_from_db(game.new_guess)
       session[:last_guess] = game.new_guess
       game.board.add(game.new_guess, game.turn)
     end
@@ -61,35 +53,20 @@ class App < Sinatra::Base
 
   post '/maker' do
     game = Game.new(session)
-    possible_codes = []
-    Code.find_each do |code|
-      c = [code.color0, 
-           code.color1,
-           code.color2,
-           code.color3,
-           code.color4,
-           code.color5].compact
-      possible_codes.push(c)
-    end
-    
+    possible_codes = get_codes_from_db
     game.computer.possible_codes = Marshal.load(Marshal.dump(possible_codes)) #deep cloning the 2d array
+    
     feedback = get_player_feedback
     game.computer.calculate(feedback)
     removed_codes = possible_codes - game.computer.possible_codes
     removed_codes.each do |code|
-      c = Code.find_by(color0: code[0], 
-                       color1: code[1],
-                       color2: code[2],
-                       color3: code[3],
-                       color4: code[4],
-                       color5: code[5])
-      c.destroy
+      remove_code_from_db(code)
     end
 
     session[:next_guess] = game.computer.possible_codes.first
     game.board.add_feedback(game.turn, feedback)
     game.turn = game.turn + 1
-    game.session_variables.each {|key, value| session[key] = value}
+    save(game)
     redirect '/maker'
   end
 
@@ -104,12 +81,12 @@ class App < Sinatra::Base
     feedback = game.computer.get_feedback(guess)
     game.board.add(guess, game.turn, feedback)
     game.turn = game.turn + 1
-    game.session_variables.each {|key, value| session[key] = value}
+    save(game)
     redirect '/breaker'
   end
 
   post '/reset' do
-    Code.destroy_all
+    reset_db
     session.clear
     redirect '/'
   end
@@ -122,4 +99,42 @@ class App < Sinatra::Base
     feedback
   end
 
+  def reset_db
+    Code.destroy_all if Code.first
+  end
+
+  def create_possible_codes_db(game)
+    game.computer.create_possible_codes.each do |code|
+      code = code.each_with_index.map { |value, index| ["color#{index}", value] }.to_h
+      Code.create(code)
+    end
+  end
+
+  def remove_code_from_db(code)
+    c = Code.find_by(color0: code[0], 
+                     color1: code[1],
+                     color2: code[2],
+                     color3: code[3],
+                     color4: code[4],
+                     color5: code[5])
+    c.destroy
+  end
+
+  def get_codes_from_db
+    possible_codes = []
+    Code.find_each do |code|
+      c = [code.color0, 
+           code.color1,
+           code.color2,
+           code.color3,
+           code.color4,
+           code.color5].compact
+      possible_codes.push(c)
+    end
+    possible_codes
+  end
+
+  def save(game)
+    game.session_variables.each {|key, value| session[key] = value}
+  end
 end
