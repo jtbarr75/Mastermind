@@ -90,6 +90,10 @@ class App < Sinatra::Base
     redirect '/'
   end
 
+  get '/reset' do
+    redirect '/'
+  end
+
   def get_player_feedback
     feedback = []
     params[:num_correct].to_i.times {feedback.push("C")}
