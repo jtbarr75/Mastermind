@@ -117,7 +117,7 @@ class App < Sinatra::Base
                      color3: code[3],
                      color4: code[4],
                      color5: code[5])
-    c.destroy
+    c.destroy if c
   end
 
   def get_codes_from_db
