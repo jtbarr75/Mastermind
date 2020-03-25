@@ -13,6 +13,6 @@
 /* If the screen size is 640px wide or less, set the font-size of <div> to 30px */
 @media screen and (max-width: 640px) {
   * {
-    font-size: 18pt;
+    font-size: 22pt;
   }
 }
