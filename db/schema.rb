@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_23_193627) do
+ActiveRecord::Schema.define(version: 2020_03_24_010513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "codes", force: :cascade do |t|
-    t.integer "color1", default: -1
-    t.integer "color2", default: -1
-    t.integer "color3", default: -1
-    t.integer "color4", default: -1
-    t.integer "color5", default: -1
-    t.integer "color6", default: -1
+    t.string "color0"
+    t.string "color1"
+    t.string "color2"
+    t.string "color3"
+    t.string "color4"
+    t.string "color5"
   end
 
 end
